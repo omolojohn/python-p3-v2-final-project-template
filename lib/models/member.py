@@ -26,3 +26,19 @@ class Member:
         conn.close()
 
         return [Member(*member) for member in members]
+
+    @staticmethod
+    def find_by_id(member_id):
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        c.execute('''SELECT * FROM members WHERE id=?''', (member_id,))
+        member = c.fetchone()
+
+        conn.close()
+
+        if member:
+            return Member(*member)
+        else:
+            return None
+
