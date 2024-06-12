@@ -16,6 +16,21 @@ class Book:
     def __repr__(self):
         return f"<Book(id={self.id}, title='{self.title}', author='{self.author}')>"
 
+    def save(self):
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        if self.id:
+            c.execute('''UPDATE books SET title=?, author=?, quantity=?, member_id=?, created_at=? WHERE id=?''',
+                      (self.title, self.author, self.quantity, self.member_id, self.created_at, self.id))
+        else:
+            c.execute('''INSERT INTO books (title, author, quantity, member_id, created_at) VALUES (?, ?, ?, ?, ?)''',
+                      (self.title, self.author, self.quantity, self.member_id, self.created_at))
+            self.id = c.lastrowid
+
+        conn.commit()
+        conn.close()
+
     @staticmethod
     def get_all():
         conn = sqlite3.connect(DB_PATH)
