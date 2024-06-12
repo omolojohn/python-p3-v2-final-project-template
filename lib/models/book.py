@@ -1,9 +1,14 @@
 # lib/models/book.py
+# Import statements
 import sqlite3
 from datetime import datetime
 
+
+# Define the path to the SQLite database
 DB_PATH = 'db/library.db'
 
+
+# Define the Book class to represent a book in the library
 class Book:
     def __init__(self, title, author, quantity, member_id=None, created_at=None, id=None):
         self.id = id
@@ -16,6 +21,8 @@ class Book:
     def __repr__(self):
         return f"<Book(id={self.id}, title='{self.title}', author='{self.author}')>"
 
+
+    # Method to save the Book object to the database
     def save(self):
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
@@ -31,6 +38,8 @@ class Book:
         conn.commit()
         conn.close()
 
+
+    # Method to delete the Book object from the database
     def delete(self):
         if not self.id:
             return False
@@ -45,6 +54,8 @@ class Book:
 
         return True
 
+
+    # Static method to retrieve all books from the database
     @staticmethod
     def get_all():
         conn = sqlite3.connect(DB_PATH)
@@ -57,6 +68,8 @@ class Book:
 
         return [Book(*book) for book in books]
 
+
+    # Static method to find a book by its id
     @staticmethod
     def find_by_id(book_id):
         conn = sqlite3.connect(DB_PATH)

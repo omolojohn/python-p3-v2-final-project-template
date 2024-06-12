@@ -1,4 +1,5 @@
 # lib/cli.py
+# Import statements
 import os
 import sys
 import sqlite3
@@ -6,11 +7,16 @@ from datetime import datetime
 from models.book import Book
 from models.member import Member
 
+# Define the path to the SQLite database
 DB_PATH = 'db/library.db'
 
+
+# Function to clear the terminal screen based on the operating system
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+
+# Function to display the main menu
 def main_menu():
     clear_screen()
     print("Welcome to the Library Management System")
@@ -18,6 +24,8 @@ def main_menu():
     print("2. Members")
     print("0. Exit")
 
+
+# Function to display the books menu
 def books_menu():
     clear_screen()
     print("Books Menu")
@@ -28,6 +36,8 @@ def books_menu():
     print("5. Find a book by ID")
     print("0. Back to main menu")
 
+
+# Function to display the members menu
 def members_menu():
     clear_screen()
     print("Members Menu")
@@ -38,18 +48,24 @@ def members_menu():
     print("5. Find a member by ID")
     print("0. Back to main menu")
 
+
+# Function to validate integer input
 def validate_integer_input(input_text):
     try:
         return int(input_text)
     except ValueError:
         return None
 
+
+# Function to validate positive integer input
 def validate_positive_integer_input(input_text):
     value = validate_integer_input(input_text)
     if value is not None and value >= 0:
         return value
     return None
 
+
+# Function to add a book to the library
 def add_book():
     title = input("Enter the title of the book: ")
     author = input("Enter the author of the book: ")
@@ -62,6 +78,8 @@ def add_book():
     book.save()
     print("Book added successfully")
 
+
+# Function to delete a book from the library
 def delete_book():
     book_id = validate_positive_integer_input(input("Enter the ID of the book to delete: "))
     if book_id is None:
@@ -75,11 +93,15 @@ def delete_book():
     else:
         print("Book not found")
 
+
+# Function to view all books in the library
 def view_all_books():
     books = Book.get_all()
     for book in books:
         print(book)
 
+
+# Function to view related members of a book
 def view_related_members():
     book_id = validate_positive_integer_input(input("Enter the ID of the book to view members: "))
     if book_id is None:
@@ -96,6 +118,8 @@ def view_related_members():
     else:
         print("Book not found or no member related")
 
+
+# Function to find a book by its ID
 def find_book_by_id():
     book_id = validate_positive_integer_input(input("Enter the ID of the book to find: "))
     if book_id is None:
@@ -108,6 +132,8 @@ def find_book_by_id():
     else:
         print("Book not found")
 
+
+# Function to add a member to the library
 def add_member():
     member_name = input("Enter the name of the member: ")
     email = input("Enter the email of the member: ")
@@ -117,6 +143,8 @@ def add_member():
     member.save()
     print("Member added successfully")
 
+
+# Function to delete a member from the library
 def delete_member():
     member_id = validate_positive_integer_input(input("Enter the ID of the member to delete: "))
     if member_id is None:
@@ -130,11 +158,15 @@ def delete_member():
     else:
         print("Member not found")
 
+
+# Function to view all members in the library
 def view_all_members():
     members = Member.get_all()
     for member in members:
         print(member)
 
+
+# Function to view related books of a member
 def view_related_books():
     member_id = validate_positive_integer_input(input("Enter the ID of the member to view books: "))
     if member_id is None:
@@ -149,6 +181,8 @@ def view_related_books():
     else:
         print("No related books found")
 
+
+# Function to find a member by their ID
 def find_member_by_id():
     member_id = validate_positive_integer_input(input("Enter the ID of the member to find: "))
     if member_id is None:
@@ -161,6 +195,8 @@ def find_member_by_id():
     else:
         print("Member not found")
 
+
+# Main CLI function to handle user input and navigation
 def cli():
     while True:
         main_menu()
@@ -212,5 +248,7 @@ def cli():
             print("Invalid choice. Please try again.")
             input("Press Enter to continue...")
 
+
+# Entry point of the script
 if __name__ == "__main__":
     cli()
