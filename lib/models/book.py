@@ -28,3 +28,17 @@ class Book:
 
         return [Book(*book) for book in books]
 
+    @staticmethod
+    def find_by_id(book_id):
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        c.execute('''SELECT * FROM books WHERE id=?''', (book_id,))
+        book = c.fetchone()
+
+        conn.close()
+
+        if book:
+            return Book(*book)
+        else:
+            return None
