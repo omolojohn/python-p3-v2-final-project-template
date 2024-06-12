@@ -14,3 +14,15 @@ class Member:
 
     def __repr__(self):
         return f"<Member(id={self.id}, member_name='{self.member_name}', email='{self.email}')>"
+
+    @staticmethod
+    def get_all():
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        c.execute('''SELECT * FROM members''')
+        members = c.fetchall()
+
+        conn.close()
+
+        return [Member(*member) for member in members]
