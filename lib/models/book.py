@@ -15,3 +15,16 @@ class Book:
 
     def __repr__(self):
         return f"<Book(id={self.id}, title='{self.title}', author='{self.author}')>"
+
+    @staticmethod
+    def get_all():
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        c.execute('''SELECT * FROM books''')
+        books = c.fetchall()
+
+        conn.close()
+
+        return [Book(*book) for book in books]
+
