@@ -61,3 +61,156 @@ def add_book():
     book = Book(title, author, quantity)
     book.save()
     print("Book added successfully")
+
+def delete_book():
+    book_id = validate_positive_integer_input(input("Enter the ID of the book to delete: "))
+    if book_id is None:
+        print("Invalid book ID entered")
+        return
+
+    book = Book.find_by_id(book_id)
+    if book:
+        book.delete()
+        print("Book deleted successfully")
+    else:
+        print("Book not found")
+
+def view_all_books():
+    books = Book.get_all()
+    for book in books:
+        print(book)
+
+def view_related_members():
+    book_id = validate_positive_integer_input(input("Enter the ID of the book to view members: "))
+    if book_id is None:
+        print("Invalid book ID entered")
+        return
+
+    book = Book.find_by_id(book_id)
+    if book and book.member_id:
+        member = Member.find_by_id(book.member_id)
+        if member:
+            print(f"Related member: {member}")
+        else:
+            print("No related member found")
+    else:
+        print("Book not found or no member related")
+
+def find_book_by_id():
+    book_id = validate_positive_integer_input(input("Enter the ID of the book to find: "))
+    if book_id is None:
+        print("Invalid book ID entered")
+        return
+
+    book = Book.find_by_id(book_id)
+    if book:
+        print(book)
+    else:
+        print("Book not found")
+
+def add_member():
+    member_name = input("Enter the name of the member: ")
+    email = input("Enter the email of the member: ")
+    phone = input("Enter the phone number of the member: ")
+
+    member = Member(member_name, email, phone)
+    member.save()
+    print("Member added successfully")
+
+def delete_member():
+    member_id = validate_positive_integer_input(input("Enter the ID of the member to delete: "))
+    if member_id is None:
+        print("Invalid member ID entered")
+        return
+
+    member = Member.find_by_id(member_id)
+    if member:
+        member.delete()
+        print("Member deleted successfully")
+    else:
+        print("Member not found")
+
+def view_all_members():
+    members = Member.get_all()
+    for member in members:
+        print(member)
+
+def view_related_books():
+    member_id = validate_positive_integer_input(input("Enter the ID of the member to view books: "))
+    if member_id is None:
+        print("Invalid member ID entered")
+        return
+
+    books = Book.get_all()
+    related_books = [book for book in books if book.member_id == member_id]
+    if related_books:
+        for book in related_books:
+            print(book)
+    else:
+        print("No related books found")
+
+def find_member_by_id():
+    member_id = validate_positive_integer_input(input("Enter the ID of the member to find: "))
+    if member_id is None:
+        print("Invalid member ID entered")
+        return
+
+    member = Member.find_by_id(member_id)
+    if member:
+        print(member)
+    else:
+        print("Member not found")
+
+def cli():
+    while True:
+        main_menu()
+        choice = validate_integer_input(input("Enter your choice: "))
+
+        if choice == 0:
+            break
+        elif choice == 1:
+            while True:
+                books_menu()
+                books_choice = validate_integer_input(input("Enter your choice: "))
+
+                if books_choice == 0:
+                    break
+                elif books_choice == 1:
+                    add_book()
+                elif books_choice == 2:
+                    delete_book()
+                elif books_choice == 3:
+                    view_all_books()
+                elif books_choice == 4:
+                    view_related_members()
+                elif books_choice == 5:
+                    find_book_by_id()
+                else:
+                    print("Invalid choice. Please try again.")
+                    input("Press Enter to continue...")
+        elif choice == 2:
+            while True:
+                members_menu()
+                members_choice = validate_integer_input(input("Enter your choice: "))
+
+                if members_choice == 0:
+                    break
+                elif members_choice == 1:
+                    add_member()
+                elif members_choice == 2:
+                    delete_member()
+                elif members_choice == 3:
+                    view_all_members()
+                elif members_choice == 4:
+                    view_related_books()
+                elif members_choice == 5:
+                    find_member_by_id()
+                else:
+                    print("Invalid choice. Please try again.")
+                    input("Press Enter to continue...")
+        else:
+            print("Invalid choice. Please try again.")
+            input("Press Enter to continue...")
+
+if __name__ == "__main__":
+    cli()
