@@ -37,3 +37,15 @@ def members_menu():
     print("4. View related books")
     print("5. Find a member by ID")
     print("0. Back to main menu")
+
+def validate_integer_input(input_text):
+    try:
+        return int(input_text)
+    except ValueError:
+        return None
+
+def validate_positive_integer_input(input_text):
+    value = validate_integer_input(input_text)
+    if value is not None and value >= 0:
+        return value
+    return None
