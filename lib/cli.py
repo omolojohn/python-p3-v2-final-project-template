@@ -49,3 +49,15 @@ def validate_positive_integer_input(input_text):
     if value is not None and value >= 0:
         return value
     return None
+
+def add_book():
+    title = input("Enter the title of the book: ")
+    author = input("Enter the author of the book: ")
+    quantity = validate_positive_integer_input(input("Enter the quantity of the book: "))
+    if quantity is None:
+        print("Invalid quantity entered")
+        return
+
+    book = Book(title, author, quantity)
+    book.save()
+    print("Book added successfully")
