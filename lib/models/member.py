@@ -30,6 +30,21 @@ class Member:
         conn.commit()
         conn.close()
 
+    def delete(self):
+        if not self.id:
+            return False
+        
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        c.execute('''DELETE FROM members WHERE id=?''', (self.id,))
+
+        conn.commit()
+        conn.close()
+
+        return True
+
+
     @staticmethod
     def get_all():
         conn = sqlite3.connect(DB_PATH)
