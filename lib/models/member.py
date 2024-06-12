@@ -15,6 +15,17 @@ class Member:
     def __repr__(self):
         return f"<Member(id={self.id}, member_name='{self.member_name}', email='{self.email}')>"
 
+    @property
+    def email(self):
+        return self._email
+
+    @email.setter
+    def email(self, value):
+        if not value:
+            raise ValueError("Email cannot be empty")
+        self._email = value
+
+
     def save(self):
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
@@ -43,7 +54,6 @@ class Member:
         conn.close()
 
         return True
-
 
     @staticmethod
     def get_all():
