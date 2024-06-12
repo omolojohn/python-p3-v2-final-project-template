@@ -15,6 +15,21 @@ class Member:
     def __repr__(self):
         return f"<Member(id={self.id}, member_name='{self.member_name}', email='{self.email}')>"
 
+    def save(self):
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        if self.id:
+            c.execute('''UPDATE members SET member_name=?, email=?, phone=?, created_at=? WHERE id=?''',
+                      (self.member_name, self.email, self.phone, self.created_at, self.id))
+        else:
+            c.execute('''INSERT INTO members (member_name, email, phone, created_at) VALUES (?, ?, ?, ?)''',
+                      (self.member_name, self.email, self.phone, self.created_at))
+            self.id = c.lastrowid 
+
+        conn.commit()
+        conn.close()
+
     @staticmethod
     def get_all():
         conn = sqlite3.connect(DB_PATH)
