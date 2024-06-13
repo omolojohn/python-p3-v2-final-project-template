@@ -64,6 +64,7 @@ class TestLibraryClasses(unittest.TestCase):
 
         # Retrieve the saved book from the database
         saved_book = Book.find_by_id(book.id)
+        print(saved_book.__dict__)
         print(f"Actual book title: {saved_book.title}")
         self.assertIsNotNone(saved_book)
         self.assertEqual(saved_book.title, 'New Book')

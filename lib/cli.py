@@ -6,6 +6,7 @@ import sqlite3
 from datetime import datetime
 from models.book import Book
 from models.member import Member
+from helpers import helper_1, exit_program
 
 # Define the path to the SQLite database
 DB_PATH = 'db/library.db'
@@ -27,7 +28,9 @@ def main_menu():
 
 # Function to display the books menu
 def books_menu():
-    clear_screen()
+    print("", end="\n")
+    print("------------------------------", end="\n")
+    print("", end="\n")
     print("Books Menu")
     print("1. Add a book")
     print("2. Delete a book")
@@ -203,7 +206,7 @@ def cli():
         choice = validate_integer_input(input("Enter your choice: "))
 
         if choice == 0:
-            break
+            exit_program()
         elif choice == 1:
             while True:
                 books_menu()
