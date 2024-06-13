@@ -32,4 +32,3 @@ CONN.commit()
 
 CURSOR.close()
 CONN.close()
-
