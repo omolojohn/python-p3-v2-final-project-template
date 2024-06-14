@@ -19,7 +19,9 @@ def clear_screen():
 
 # Function to display the main menu
 def main_menu():
-    clear_screen()
+    print("", end="\n")
+    print("------------------------------", end="\n")
+    print("", end="\n")
     print("Welcome to the Library Management System")
     print("1. Books")
     print("2. Members")
@@ -42,7 +44,9 @@ def books_menu():
 
 # Function to display the members menu
 def members_menu():
-    clear_screen()
+    print("", end="\n")
+    print("------------------------------", end="\n")
+    print("", end="\n")
     print("Members Menu")
     print("1. Add a member")
     print("2. Delete a member")
@@ -79,7 +83,7 @@ def add_book():
 
     book = Book(title, author, quantity)
     book.save()
-    print("Book added successfully")
+    print("\033[92mBook added successfully\033[0m")
 
 
 # Function to delete a book from the library
@@ -92,7 +96,7 @@ def delete_book():
     book = Book.find_by_id(book_id)
     if book:
         book.delete()
-        print("Book deleted successfully")
+        print("\033[92mBook deleted successfully\033[0m")
     else:
         print("Book not found")
 
@@ -144,7 +148,7 @@ def add_member():
 
     member = Member(member_name, email, phone)
     member.save()
-    print("Member added successfully")
+    print("\033[92mMember added successfully\033[0m")
 
 
 # Function to delete a member from the library
@@ -157,7 +161,7 @@ def delete_member():
     member = Member.find_by_id(member_id)
     if member:
         member.delete()
-        print("Member deleted successfully")
+        print("\033[92mMember deleted successfully\033[0m")
     else:
         print("Member not found")
 
