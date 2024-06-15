@@ -2,7 +2,6 @@
 # Import statements
 import sqlite3
 from datetime import datetime
-from config.connection import conn,c
 
 # Setting the path to the SQLite database file
 DB_PATH = 'db/library.db'
