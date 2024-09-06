@@ -1,5 +1,3 @@
-# lib/models/member.py
-# Import statements
 import sqlite3
 from datetime import datetime
 
@@ -8,7 +6,6 @@ DB_PATH = 'db/library.db'
 
 # Defining the Member class to represent a library member
 class Member:
-
     all = {}
 
     def __init__(self, member_name, email, phone, created_at=None, id=None):
@@ -17,7 +14,7 @@ class Member:
         self.email = email
         self.phone = phone
         self.created_at = created_at if created_at else datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-   
+
     def __repr__(self):
         return f"<Member(id={self.id}, member_name='{self.member_name}', email='{self.email}')>"
 
@@ -26,31 +23,35 @@ class Member:
     def email(self):
         return self._email
 
-    # Defining the setter for email to include validation
     @email.setter
     def email(self, value):
         if not value:
             raise ValueError("Email cannot be empty")
         self._email = value
-    
+
     # Method to save the Member object to the database
     def save(self):
-    
+        # Connect to the SQLite database
+        conn = sqlite3.connect(DB_PATH)
+        # Create a cursor object
+        c = conn.cursor()
+
         if self.id:
             c.execute('''UPDATE members SET member_name=?, email=?, phone=?, created_at=? WHERE id=?''',
                       (self.member_name, self.email, self.phone, self.created_at, self.id))
         else:
             c.execute('''INSERT INTO members (member_name, email, phone, created_at) VALUES (?, ?, ?, ?)''',
                       (self.member_name, self.email, self.phone, self.created_at))
-            self.id = c.lastrowid 
+            self.id = c.lastrowid  # Retrieve the last inserted ID
 
-            # catching strategy
+            # Caching strategy
             type(self).all[self.id] = self
 
         conn.commit()
         conn.close()
+
     @classmethod
-    def instance_from_db(cls,row):
+    def instance_from_db(cls, row):
         member = cls.all.get(row[0])
 
         if member:
@@ -58,10 +59,10 @@ class Member:
             member.email = row[2]
             member.phone = row[3]
         else:
-            # create instance
+            # Create instance
             member = cls(row[1], row[2], row[3])
 
-            # get id
+            # Get id
             member.id = row[0]
 
             cls.all[member.id] = member
@@ -72,7 +73,7 @@ class Member:
     def delete(self):
         if not self.id:
             return False
-        
+
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
 
@@ -82,7 +83,7 @@ class Member:
         conn.close()
 
         return True
-    
+
     # Static method to find a member by their id
     @classmethod
     def find_by_id(cls, member_id):
@@ -92,5 +93,19 @@ class Member:
         c.execute('''SELECT * FROM members WHERE id=?''', (member_id,))
         member = c.fetchone()
 
-        # conn.close()
+        conn.close()  # Make sure to close the connection here
         return cls.instance_from_db(member) if member else None
+
+    # Static method to retrieve all members from the database
+    @staticmethod
+    def get_all():
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        c.execute('''SELECT * FROM members''')
+        members = c.fetchall()
+
+        conn.close()
+
+        # Use instance_from_db to create instances of the Member class
+        return [Member.instance_from_db(member) for member in members]

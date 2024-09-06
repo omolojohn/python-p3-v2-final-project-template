@@ -20,7 +20,7 @@ def clear_screen():
 # Function to display the main menu
 def main_menu():
     print("", end="\n")
-    print("------------------------------", end="\n")
+    print("******************************", end="\n")
     print("", end="\n")
     print("Welcome to the Library Management System")
     print("1. Books")
@@ -31,7 +31,7 @@ def main_menu():
 # Function to display the books menu
 def books_menu():
     print("", end="\n")
-    print("------------------------------", end="\n")
+    print("******************************", end="\n")
     print("", end="\n")
     print("Books Menu")
     print("1. Add a book")
@@ -45,7 +45,7 @@ def books_menu():
 # Function to display the members menu
 def members_menu():
     print("", end="\n")
-    print("------------------------------", end="\n")
+    print("******************************", end="\n")
     print("", end="\n")
     print("Members Menu")
     print("1. Add a member")
@@ -77,11 +77,12 @@ def add_book():
     title = input("Enter the title of the book: ")
     author = input("Enter the author of the book: ")
     quantity = validate_positive_integer_input(input("Enter the quantity of the book: "))
+    member_id = validate_positive_integer_input(input("Enter the ID of the member (or press Enter to skip): "))
     if quantity is None:
         print("Invalid quantity entered")
         return
 
-    book = Book(title, author, quantity)
+    book = Book(title, author, quantity, member_id if member_id else None)
     book.save()
     print("\033[92mBook added successfully\033[0m")
 
